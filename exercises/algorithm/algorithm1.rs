@@ -35,7 +35,8 @@ impl<T> Default for LinkedList<T> {
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T> LinkedList<T> 
+{
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,16 +70,51 @@ impl<T> LinkedList<T> {
             },
         }
     }
+}
+
+impl<T: Clone + Ord> LinkedList<T> {
 	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
-		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+		let mut res:LinkedList<T> = LinkedList::new();
+
+        let mut pa = list_a.start;
+        let mut pb = list_b.start;
+
+        unsafe{
+
+        while let (Some(node_a), Some(node_b)) = (pa, pb) {
+            let a_ref = node_a.as_ref();
+            let b_ref = node_b.as_ref();
+
+            if(a_ref.val <= b_ref.val) {
+                res.add(a_ref.val.clone());
+                pa = a_ref.next;
+            }else if (b_ref.val < a_ref.val) {
+                res.add(b_ref.val.clone());
+                pb = b_ref.next;
+            }
         }
+        
+        let mut cur = pa;
+        while let Some(node) = cur {
+            let node_ref = node.as_ref();
+            res.add(node_ref.val.clone());
+            cur = node_ref.next;
+        }
+
+        let mut cur = pb;
+        while let Some(node) = cur {
+            let node_ref = node.as_ref();
+            res.add(node_ref.val.clone());
+            cur = node_ref.next;
+        }
+
+    }
+    res
 	}
 }
+
+
 
 impl<T> Display for LinkedList<T>
 where

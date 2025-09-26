@@ -27,16 +27,22 @@
 //
 // You should NOT modify any existing code except for adding two lines of attributes.
 
-// I AM NOT DONE
 
 extern "Rust" {
     fn my_demo_function(a: u32) -> u32;
     fn my_demo_function_alias(a: u32) -> u32;
 }
 
-mod Foo {
+mod Foo {   
     // No `extern` equals `extern "Rust"`.
-    fn my_demo_function(a: u32) -> u32 {
+    // no_mangle表示不要让rust生成变化之后的函数符号，从而能让extern直接找到
+    #[no_mangle]
+    pub extern "Rust" fn my_demo_function(a: u32) -> u32 {
+        a
+    }
+
+    #[no_mangle]
+    pub extern "Rust" fn my_demo_function_alias(a: u32) -> u32 {
         a
     }
 }

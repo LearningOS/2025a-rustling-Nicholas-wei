@@ -27,7 +27,6 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
 
 // Your task is to complete this implementation and return an Ok result of inner
 // type Color. You need to create an implementation for a tuple of three
@@ -41,6 +40,25 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let var0 = tuple.0;
+        let var1 = tuple.1;
+        let var2 = tuple.2;
+        if var0 < 0 || var1 < 0 || var2 < 0 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if (var0 < 0 || var0 > 255) || (var1 < 0 || var1 > 255) || (var2 < 0 || var2 > 255) {
+            return Err(IntoColorError::IntConversion);
+        }
+        
+        
+        let var0 = tuple.0 as u8;
+        let var1 = tuple.1 as u8;
+        let var2 = tuple.2 as u8;
+        if (var0 < 0 || var0 > 255) || (var1 < 0 || var1 > 255) || (var2 < 0 || var2 > 255) {
+            Err(IntoColorError::IntConversion)
+        } else {
+            Ok(Color{red:var0, green:var1, blue:var2})
+        }
     }
 }
 
@@ -48,6 +66,26 @@ impl TryFrom<(i16, i16, i16)> for Color {
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let var0 = arr[0];
+        let var1 = arr[1];
+        let var2 = arr[2];
+        if var0 < 0 || var1 < 0 || var2 < 0 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if (var0 < 0 || var0 > 255) || (var1 < 0 || var1 > 255) || (var2 < 0 || var2 > 255) {
+            return Err(IntoColorError::IntConversion);
+        }
+        
+        
+        let var0 = arr[0] as u8;
+        let var1 = arr[1] as u8;
+        let var2 = arr[2] as u8;
+
+        if (var0 < 0 || var0 > 255) || (var1 < 0 || var1 > 255) || (var2 < 0 || var2 > 255) {
+            Err(IntoColorError::IntConversion)
+        } else {
+            Ok(Color{red:var0, green:var1, blue:var2})
+        }
     }
 }
 
@@ -55,6 +93,26 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        
+        let var0 = slice[0];
+        let var1 = slice[1];
+        let var2 = slice[2];
+        if var0 < 0 || var1 < 0 || var2 < 0 {
+            return Err(IntoColorError::IntConversion);
+        }
+        if (var0 < 0 || var0 > 255) || (var1 < 0 || var1 > 255) || (var2 < 0 || var2 > 255) {
+            return Err(IntoColorError::IntConversion);
+        }
+        
+        
+        let var0 = slice[0] as u8;
+        let var1 = slice[1] as u8;
+        let var2 = slice[2] as u8;
+
+        Ok(Color{red:var0, green:var1, blue:var2})
     }
 }
 
