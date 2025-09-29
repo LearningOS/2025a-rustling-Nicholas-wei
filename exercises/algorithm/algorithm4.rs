@@ -3,7 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -49,14 +48,22 @@ where
     }
 
     // Insert a value into the BST
-    fn insert(&mut self, value: T) {
+    fn insert(&mut self, value_input: T) {
         //TODO
+        match self.root {
+            Some(ref mut root_node) => root_node.insert(value_input),
+            None => self.root = Some(Box::new(TreeNode::new(value_input))),
+        }
+
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
         //TODO
-        true
+        match self.root {
+            Some(ref root_node) => root_node.search(value),
+            None => false,
+        }
     }
 }
 
@@ -67,6 +74,45 @@ where
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
         //TODO
+        if value == self.value {
+            return;
+        }
+        else if value < self.value {
+            // 直接写self.insert(self.left);不正确，因为self.left的类型是Option<Box<TreeNode<T>>>。需要match
+            match self.left {
+                Some(ref mut left_node) => left_node.insert(value),
+                // 下一行的Box初始化方式，为什么这么写？
+                // 是按照节点类型写的吗
+                None => self.left = Some(Box::new(TreeNode::new(value))),
+            }
+        }
+        else {
+            match self.right {
+                Some(ref mut right) => right.insert(value),
+                // 下一行的Box初始化方式
+                None => self.right = Some(Box::new(TreeNode::new(value))),
+            }
+        }
+    }
+
+    // 以node为单位插入到目标中
+    fn search(&self, value: T) -> bool {
+        if value ==  self.value {
+            return true
+        }
+        else if value < self.value {
+            match self.left {
+                Some(ref left_node) => left_node.search(value),
+                None => false,
+            }
+        }
+        else {
+            match self.right {
+                Some(ref right) => right.search(value),
+                // 下一行的Box初始化方式
+                None => false,
+            }
+        }
     }
 }
 

@@ -2,8 +2,7 @@
 	stack
 	This question requires you to use a stack to achieve a bracket match
 */
-
-// I AM NOT DONE
+use std::collections::HashSet;
 #[derive(Debug)]
 struct Stack<T> {
 	size: usize,
@@ -102,7 +101,53 @@ impl<'a, T> Iterator for IterMut<'a, T> {
 fn bracket_match(bracket: &str) -> bool
 {
 	//TODO
-	true
+	// 用栈实现。这里栈数据结构就用vector
+	let mut vec_str: Vec<String> = Vec::new();
+	let s: String = bracket.to_string();
+	let mut bracket_set = HashSet::new();
+	bracket_set.insert("{");
+	bracket_set.insert("}");
+	bracket_set.insert("[");
+	bracket_set.insert("]");
+	bracket_set.insert("(");
+	bracket_set.insert(")");
+	for ch in s.chars(){
+		match ch {
+			'{' => vec_str.push(ch.to_string()),
+			'(' => vec_str.push(ch.to_string()),
+			'[' => vec_str.push(ch.to_string()),
+			'}' => {
+				if let Some(now_str) = vec_str.last() {
+					if *now_str == String::from("{") {
+						vec_str.pop();
+					}
+				}else{
+					vec_str.push(String::from("}"));
+				}
+			},
+			']' => {
+				if let Some(now_str) = vec_str.last() {
+					if *now_str == String::from("[") {
+						vec_str.pop();
+					}
+				}else{
+					vec_str.push(String::from("]"));
+				}
+			},
+			')' => {
+				if let Some(now_str) = vec_str.last() {
+					if *now_str == String::from("(") {
+						vec_str.pop();
+					}
+				}else{
+					vec_str.push(String::from(")"));
+				}
+			},
+			_ => continue,
+
+		}
+	}
+	return vec_str.len() == 0;
 }
 
 #[cfg(test)]

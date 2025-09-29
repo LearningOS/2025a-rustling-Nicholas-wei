@@ -3,10 +3,20 @@
 	This problem requires you to implement a sorting algorithm
 	you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
+// T: Ord是trait bound代表T具有可比较的性质
+fn sort<T: Ord>(array: &mut [T]){
 	//TODO
+    let n = array.len();
+
+    for i in 0..n {
+        for j in 0..n-1 {
+            if array[j] > array[j+1] {
+                array.swap(j, j+1);
+            }
+        }
+    }
+    
 }
 #[cfg(test)]
 mod tests {
